@@ -26,15 +26,17 @@ x-thouzer-apps: &common
         - ./thouzer_teleop:/root/catkin_ws/src/thouzer_ros/thouzer_teleop
         - ./thouzer_waypoints:/root/catkin_ws/src/thouzer_ros/thouzer_waypoints
         - ./.melodic_depends.rosinstall:/root/catkin_ws/src/thouzer_ros/.melodic_depends.rosinstall
-
+        - ./maps:/root/catkin_ws/maps
+        
 services:
     robot:
         <<: *common
+        command: ["roslaunch", "thouzer_bringup", "thouzer_robot.launch", "use_imu:=false", "publish_odom:=true"]
         # command: ["roslaunch", "thouzer_bringup", "thouzer_robot.launch", "use_imu:=false", "publish_odom:=false"]
-        command: ["roslaunch", "thouzer_bringup", "thouzer_robot.launch", "use_imu:=true"]
+        # command: ["roslaunch", "thouzer_bringup", "thouzer_robot.launch", "use_imu:=true"]
         # command: ["roslaunch", "thouzer_bringup", "thouzer_robot.launch", "use_imu:=false"]
-        devices:
-            - "/dev/ttyACM0:/dev/ttyACM0"
+        # devices:
+        #     - "/dev/ttyACM0:/dev/ttyACM0"
     rviz:
         <<: *common
         command: ["roslaunch", "thouzer_bringup", "thouzer_remote_debugger.launch"]

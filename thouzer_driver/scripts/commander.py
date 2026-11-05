@@ -53,12 +53,15 @@ class ThouzerCommander():
 
     def _wait_for_mqtt_server(self):
         i = 0
-        while self.thouzer_status == ThouzerStatus.UNKNOWN and self.battery_voltage == 0.0:
+        # Keep the original startup gate: either ROS status or battery data must arrive.
+        # This checks ROS telemetry, not an MQTT broker connection.
+        while (not rospy.is_shutdown() and
+               self.thouzer_status == ThouzerStatus.UNKNOWN and
+               self.battery_voltage == 0.0):
             rospy.sleep(0.01)
             i += 1
             if i == 499:
-                rospy.loginfo("thouzer_driver/commander.py: Waiting for MQTT server")
-                rospy.logerr("thouzer_driver/commander.py: Error connectiong to MQTT server")
+                rospy.logwarn("thouzer_driver/commander.py: Waiting for Thouzer ROS status or battery data (check mqtt_bridge)")
                 i = 0
 
     def _callback_status_app(self, msg):

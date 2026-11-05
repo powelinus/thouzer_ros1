@@ -1,6 +1,25 @@
 FROM osrf/ros:melodic-desktop-full
 
 WORKDIR /root/catkin_ws
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        curl \
+        ca-certificates \
+        gnupg \
+        ros-melodic-rosbridge-library \
+        ros-melodic-urg-node \
+        ros-melodic-slam-gmapping \
+        ros-melodic-map-server \
+        ros-melodic-amcl \
+        ros-melodic-neonavigation \
+        ros-melodic-navigation \
+        ros-melodic-robot-state-publisher \
+        ros-melodic-rviz \
+        ros-melodic-teleop-twist-keyboard \
+        netcat-openbsd && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add - && \
     apt-get update && \
     apt-get install -y python-vcstool python-catkin-tools python-pip python-mock \
@@ -21,12 +40,10 @@ COPY .melodic_depends.rosinstall /root/catkin_ws/src/thouzer_ros/
 COPY thouzer_bringup /root/catkin_ws/src/thouzer_ros/thouzer_bringup
 COPY thouzer_description /root/catkin_ws/src/thouzer_ros/thouzer_description
 COPY thouzer_driver /root/catkin_ws/src/thouzer_ros/thouzer_driver
-COPY thouzer_gui /root/catkin_ws/src/thouzer_ros/thouzer_gui
 COPY thouzer_msgs /root/catkin_ws/src/thouzer_ros/thouzer_msgs
 COPY thouzer_slam /root/catkin_ws/src/thouzer_ros/thouzer_slam
 COPY thouzer_teleop /root/catkin_ws/src/thouzer_ros/thouzer_teleop
 COPY thouzer_navigation /root/catkin_ws/src/thouzer_ros/thouzer_navigation
-COPY thouzer_waypoints /root/catkin_ws/src/thouzer_ros/thouzer_waypoints
 RUN apt-get update && \
     . /opt/ros/melodic/setup.sh && \
     vcs import < .melodic_depends.rosinstall && \

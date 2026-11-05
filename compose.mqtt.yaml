@@ -1,0 +1,28 @@
+
+services:
+  thouzer:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+
+    image: thouzer-melodic:mqtt
+    container_name: thouzer_ros
+
+    network_mode: host
+
+    # # volumes:
+    # #   - ./thouzer_driver/config/mqtt.yaml:/root/catkin_ws/src/thouzer_ros/thouzer_driver/config/mqtt.yaml:ro
+    # volumes:
+    #   - ./thouzer_driver:/root/catkin_ws/src/thouzer_ros/thouzer_driver
+
+    volumes:
+      - ./thouzer_driver:/root/catkin_ws/src/thouzer_ros/thouzer_driver
+      - ./mqtt_bridge_patch/bridge.py:/root/catkin_ws/src/thouzer_ros/mqtt_bridge/src/mqtt_bridge/bridge.py:ro
+      - ./maps:/root/catkin_ws/maps
+    command:
+      - roslaunch
+      - thouzer_driver
+      - mqtt.launch
+      - publish_odom:=true
+
+    restart: "no"
