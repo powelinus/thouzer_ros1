@@ -1,0 +1,12 @@
+scan_filter_chain:
+  - name: remove_rear_positive
+    type: laser_filters/LaserScanAngularBoundsFilterInPlace
+    params:
+      lower_angle: 2.792527
+      upper_angle: 3.141593
+
+  - name: remove_rear_negative
+    type: laser_filters/LaserScanAngularBoundsFilterInPlace
+    params:
+      lower_angle: -3.141593
+      upper_angle: -2.792527

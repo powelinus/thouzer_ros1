@@ -4,10 +4,10 @@
   <arg name="use_safety_limiter" default="false" />
   <arg name="use_path_with_velocity" default="true" />
   <arg name="cmd_vel_output" default="/cmd_vel" />
-  <arg name="vel" default="0.3" />
-  <arg name="acc" default="0.3" />
-  <arg name="ang_vel" default="0.6" />
-  <arg name="ang_acc" default="0.6" />
+  <arg name="vel" default="0.1" />
+  <arg name="acc" default="0.2" />
+  <arg name="ang_vel" default="0.2" />
+  <arg name="ang_acc" default="0.4" />
   <arg name="look_forward" default="0.1" />
   <arg name="curv_forward" default="0.2" />
   <arg name="slow_and_precise" default="true" />
@@ -48,7 +48,7 @@
         output="$(arg output_info)">
 
     <!-- <remap from="scan" to="/scan_filtered"/> -->
-    <remap from="scan" to="/scan"/>
+    <remap from="scan" to="/scan_filtered"/>
     <remap from="map_local" to="overlay2"/>
 
     <param name="width" value="200"/>

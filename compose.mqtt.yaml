@@ -1,4 +1,3 @@
-
 services:
   thouzer:
     build:
@@ -10,20 +9,24 @@ services:
 
     network_mode: host
 
-    # # volumes:
-    # #   - ./thouzer_driver/config/mqtt.yaml:/root/catkin_ws/src/thouzer_ros/thouzer_driver/config/mqtt.yaml:ro
-    # volumes:
-    #   - ./thouzer_driver:/root/catkin_ws/src/thouzer_ros/thouzer_driver
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
 
     volumes:
       - ./thouzer_driver:/root/catkin_ws/src/thouzer_ros/thouzer_driver
+      - ./thouzer_navigation:/root/catkin_ws/src/thouzer_ros/thouzer_navigation
+      - ./thouzer_slam:/root/catkin_ws/src/thouzer_ros/thouzer_slam
+      - ./thouzer_bringup:/root/catkin_ws/src/thouzer_ros/thouzer_bringup
+      - ./thouzer_msgs:/root/catkin_ws/src/thouzer_ros/thouzer_msgs
       - ./mqtt_bridge_patch/bridge.py:/root/catkin_ws/src/thouzer_ros/mqtt_bridge/src/mqtt_bridge/bridge.py:ro
       - ./maps:/root/catkin_ws/maps
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      
     command:
       - roslaunch
       - thouzer_driver
       - mqtt.launch
       - publish_odom:=true
 
-    # restart: "unless-stopped"
     restart: "no"

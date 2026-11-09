@@ -45,12 +45,21 @@ COPY thouzer_msgs /root/catkin_ws/src/thouzer_ros/thouzer_msgs
 COPY thouzer_slam /root/catkin_ws/src/thouzer_ros/thouzer_slam
 COPY thouzer_teleop /root/catkin_ws/src/thouzer_ros/thouzer_teleop
 COPY thouzer_navigation /root/catkin_ws/src/thouzer_ros/thouzer_navigation
+COPY waypoint_gui /root/catkin_ws/src/thouzer_ros/waypoint_gui
 RUN apt-get update && \
+    apt-get install -y \
+        libqt5widgets5 \
+        libqt5gui5 \
+        libqt5core5a \
+        qtbase5-dev \
+        python-setuptools \
+        python-enum34 && \
     . /opt/ros/melodic/setup.sh && \
     vcs import < .melodic_depends.rosinstall && \
     pip install -r mqtt_bridge/requirements.txt && \
     rosdep update && \
-    rosdep install -r -y -i --from-paths . && \
+    rosdep install -r -y -i --from-paths . \
+        --skip-keys="qtbase5-dev libqt5-gui libqt5-widgets libqt5-core python-pip python-setuptools python-enum34" && \
     rm -rf /var/lib/apt/lists/*
 WORKDIR /root/catkin_ws
 RUN . /opt/ros/melodic/setup.sh && \
