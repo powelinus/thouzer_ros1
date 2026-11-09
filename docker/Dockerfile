@@ -17,6 +17,7 @@ RUN apt-get update && \
         ros-melodic-robot-state-publisher \
         ros-melodic-rviz \
         ros-melodic-teleop-twist-keyboard \
+        ros-melodic-laser-filters \
         netcat-openbsd && \
     rm -rf /var/lib/apt/lists/*
 

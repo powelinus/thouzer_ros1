@@ -28,16 +28,35 @@
     <rosparam param="footprint" if="$(arg use_footprint)" subst_value="True">$(arg footprint)</rosparam>
   </node>
 
-  <node pkg="costmap_cspace" type="laserscan_to_map" name="laserscan_to_map" output="$(arg output_info)">
-    <!-- <remap from="scan" to="scan" /> -->
-    <!-- <remap from="map" to="map" /> -->
-    <remap from="map_local" to="overlay2" />
-    <param name="width" value="200" />
-    <param name="resolution" value="0.05" />
-    <param name="hz" value="1.0" />
-    <param name="accum_duration" value="1.0" />
-    <param name="global_frame" value="map" />
-    <param name="robot_frame" value="base_footprint" />
+  <!-- Filter pembacaan body belakang robot -->
+  <node pkg="laser_filters"
+        type="scan_to_scan_filter_chain"
+        name="rear_laser_filter"
+        output="screen">
+
+    <rosparam command="load"
+              file="$(find thouzer_navigation)/config/laser_filter.yaml"/>
+
+    <remap from="scan" to="/scan"/>
+    <remap from="scan_filtered" to="/scan_filtered"/>
+  </node>
+
+  <!-- LiDAR yang sudah difilter masuk ke costmap -->
+  <node pkg="costmap_cspace"
+        type="laserscan_to_map"
+        name="laserscan_to_map"
+        output="$(arg output_info)">
+
+    <!-- <remap from="scan" to="/scan_filtered"/> -->
+    <remap from="scan" to="/scan"/>
+    <remap from="map_local" to="overlay2"/>
+
+    <param name="width" value="200"/>
+    <param name="resolution" value="0.05"/>
+    <param name="hz" value="1.0"/>
+    <param name="accum_duration" value="1.0"/>
+    <param name="global_frame" value="map"/>
+    <param name="robot_frame" value="base_footprint"/>
   </node>
 
   <node pkg="costmap_cspace" type="largemap_to_map" name="largemap_to_map" output="$(arg output_info)" if="$(arg use_independent_local_map)">

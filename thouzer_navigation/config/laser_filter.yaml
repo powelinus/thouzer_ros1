@@ -1,0 +1,11 @@
+scan_filter_chain:
+  - name: remove_rear_body
+    type: laser_filters/LaserScanBoxFilter
+    params:
+      box_frame: base_footprint
+      min_x: -0.30
+      max_x: -0.05
+      min_y: -0.20
+      max_y: 0.20
+      min_z: 0.27
+      max_z: 0.37

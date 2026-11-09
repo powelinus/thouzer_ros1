@@ -25,4 +25,5 @@ services:
       - mqtt.launch
       - publish_odom:=true
 
+    # restart: "unless-stopped"
     restart: "no"
