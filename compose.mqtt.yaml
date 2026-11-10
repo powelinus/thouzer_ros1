@@ -6,6 +6,8 @@ services:
 
     image: thouzer-melodic:mqtt
     container_name: thouzer_ros
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
 
     network_mode: host
 
