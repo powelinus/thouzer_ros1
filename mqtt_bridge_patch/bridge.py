@@ -25,13 +25,13 @@ except NameError:
 # Bisa ditimpa lewat ROS private params (~max_linear, dst.), atau
 # lewat argumen konstruktor RosToMqttBridge.
 # ================================================================
-MAX_LINEAR = 0.30            # batas magnitudo kecepatan linear (m/s)
-MAX_ANGULAR = 0.80           # batas magnitudo kecepatan angular (rad/s)
+MAX_LINEAR = 0.08            # batas magnitudo kecepatan linear (m/s)
+MAX_ANGULAR = 0.08           # batas magnitudo kecepatan angular (rad/s)
 MAX_LINEAR_ACCEL = 0.40      # perubahan linear maksimum per detik (m/s^2)
 MAX_ANGULAR_ACCEL = 1.20     # perubahan angular maksimum per detik (rad/s^2)
 SMOOTHING_TAU = 0.15         # low-pass time constant (detik); 0 = tanpa filter
 CMD_TIMEOUT = 0.50           # jika ROS berhenti mengirim: paksa output nol (detik)
-DEFAULT_VELOCITY_HZ = 50.0   # frekuensi publish MQTT untuk Twist saat frequency=None
+DEFAULT_VELOCITY_HZ = 20.0   # frekuensi publish MQTT untuk Twist saat frequency=None
 
 
 def _finite_float(value):
