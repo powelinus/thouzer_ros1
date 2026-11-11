@@ -31,7 +31,8 @@ x-thouzer-apps: &common
 services:
     robot:
         <<: *common
-        command: ["roslaunch", "thouzer_bringup", "thouzer_robot.launch", "use_imu:=false", "publish_odom:=true"]
+        command: ["roslaunch", "thouzer_bringup", "thouzer_robot.launch", "use_imu:=true", "publish_odom:=true"]
+        # command: ["roslaunch", "thouzer_bringup", "thouzer_robot.launch", "use_imu:=false", "publish_odom:=true"]
         # command: ["roslaunch", "thouzer_bringup", "thouzer_robot.launch", "use_imu:=false", "publish_odom:=false"]
         # command: ["roslaunch", "thouzer_bringup", "thouzer_robot.launch", "use_imu:=true"]
         # command: ["roslaunch", "thouzer_bringup", "thouzer_robot.launch", "use_imu:=false"]

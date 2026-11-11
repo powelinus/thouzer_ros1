@@ -8,22 +8,50 @@ services:
     image: thouzer-melodic:mqtt
     container_name: thouzer_ros
 
+    # devices:
+    #   - "/dev/ttyACM0:/dev/ttyACM0"
+
     network_mode: host
 
-    # # volumes:
-    # #   - ./thouzer_driver/config/mqtt.yaml:/root/catkin_ws/src/thouzer_ros/thouzer_driver/config/mqtt.yaml:ro
-    # volumes:
-    #   - ./thouzer_driver:/root/catkin_ws/src/thouzer_ros/thouzer_driver
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
 
     volumes:
       - ./thouzer_driver:/root/catkin_ws/src/thouzer_ros/thouzer_driver
+      - ./thouzer_navigation:/root/catkin_ws/src/thouzer_ros/thouzer_navigation
+      - ./thouzer_slam:/root/catkin_ws/src/thouzer_ros/thouzer_slam
+      - ./thouzer_bringup:/root/catkin_ws/src/thouzer_ros/thouzer_bringup
+      - ./thouzer_msgs:/root/catkin_ws/src/thouzer_ros/thouzer_msgs
+
+      # IMU ROS1 Melodic dari Ubuntu host
+      - ./rt_usb_9axisimu_driver:/root/catkin_ws/src/thouzer_ros/rt_usb_9axisimu_driver
+
       - ./mqtt_bridge_patch/bridge.py:/root/catkin_ws/src/thouzer_ros/mqtt_bridge/src/mqtt_bridge/bridge.py:ro
       - ./maps:/root/catkin_ws/maps
-    command:
-      - roslaunch
-      - thouzer_driver
-      - mqtt.launch
-      - publish_odom:=true
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
 
-    # restart: "unless-stopped"
+    command:
+      - bash
+      - -c
+      - |
+        set -e
+        source /opt/ros/melodic/setup.bash
+        cd /root/catkin_ws
+
+        echo "Building IMU driver..."
+        catkin clean rt_usb_9axisimu_driver -y
+        catkin build rt_usb_9axisimu_driver
+
+        echo "Loading ROS workspace..."
+        source /opt/ros/melodic/setup.bash
+        source /root/catkin_ws/devel/setup.bash
+
+        echo "Checking Thouzer launch file..."
+        rospack find thouzer_bringup
+        ls -l $(rospack find thouzer_bringup)/launch/thouzer_robot.launch
+
+        echo "Starting Thouzer Robot + MQTT..."
+        exec roslaunch thouzer_bringup thouzer_robot.launch use_imu:=true publish_odom:=true
+
     restart: "no"

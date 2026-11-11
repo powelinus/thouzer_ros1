@@ -1,0 +1,11 @@
+libqt5widgets5:
+  ubuntu:
+    bionic: [libqt5widgets5]
+
+libqt5gui5:
+  ubuntu:
+    bionic: [libqt5gui5]
+
+libqt5core5a:
+  ubuntu:
+    bionic: [libqt5core5a]
